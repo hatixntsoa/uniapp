@@ -14,8 +14,8 @@
 | Gp2-5 | features/attendance_qr | attendance_reports_screen.dart | Rapports (par élève/cours/groupe) + alertes absences répétées | mocked |
 | Gp3-1 | features/admin | academic_structure_entities.dart, academic_structure_screen.dart | Années/semestres/départements/filières/niveaux/groupes/classes | mocked |
 | Gp3-2 | features/admin | admin_dashboard_stats.dart, admin_dashboard_screen.dart | Dashboard admin avec indicateurs clés | mocked |
-| Gp3-3 | features/auth | core/services/auth_service.dart, features/auth/... | Login/logout/reset/rôles | **mocked** |
-| Gp3-4 | features/auth | — | Profil, mot de passe, session sécurisée | in progress |
+| Gp3-3 | features/auth, core/services | permission_service.dart, permission_gate.dart, forgot_password_screen.dart | Login/logout/reset, gestion des rôles, permission gating | mocked |
+| Gp3-4 | features/auth, core/services | session_service.dart, profile_screen.dart, edit_profile_screen.dart, change_password_screen.dart | Profil, mot de passe, session sécurisée (refresh + auto-logout) | mocked |
 | Gp4-1..5 | features/teachers | — | Profil enseignant, EDT, recherche, liens matière | pending |
 | Gp5-1..3 | features/subjects | — | Matières, liens, filtres | pending |
 | Gp5-4/5, Gp6-1/2 | features/equipment | — | Matériels, mouvements, QR, alertes | pending |
