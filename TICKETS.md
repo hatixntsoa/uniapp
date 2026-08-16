@@ -21,7 +21,9 @@
 | Gp4-3 | features/teachers | teacher_schedule_entry.dart, teacher_detail_screen.dart | Vue EDT + absences | mocked |
 | Gp4-4 | features/teachers | teacher_list_screen.dart | Recherche/filtre par département | mocked |
 | Gp4-5 | features/teachers | teacher_repository.dart (assignSubjects) | Liaison enseignant↔matière | mocked |
-| Gp5-1..3 | features/subjects | — | Matières, liens, filtres | pending |
+| Gp5-1 | features/subjects | subject_entity.dart, subject_form_screen.dart | Créer matière (code, coef, volume, semestre, niveau, enseignant) | mocked |
+| Gp5-2 | features/subjects | subject_links.dart, subject_detail_screen.dart | Lien évaluations/notes/EDT/groupes | mocked |
+| Gp5-3 | features/subjects | subject_list_screen.dart | Recherche/filtre niveau/filière/enseignant | mocked |
 | Gp5-4/5, Gp6-1/2 | features/equipment | — | Matériels, mouvements, QR, alertes | pending |
 | Gp6-3..5 | features/social_feed | — | Fil d'actualité, groupes, messagerie | pending |
 | Gp7-1..5 | features/activities | — | Activités, inscriptions, stats | pending |
