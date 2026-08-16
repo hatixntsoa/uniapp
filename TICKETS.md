@@ -10,8 +10,8 @@
 | Gp2-1 | features/students | student_entity.dart, student_form_screen.dart | Ajout/édition/archivage étudiant | mocked |
 | Gp2-2 | features/students | student_profile_screen.dart | Profil complet + QR + historique académique | mocked |
 | Gp2-3 | features/students | student_list_screen.dart, student_situation_screen.dart | Recherche/filtres + vue globale | mocked |
-| Gp2-4 | features/attendance_qr | — | Session de présence + check-in QR | pending |
-| Gp2-5 | features/attendance_qr | — | Rapports de présence + alertes | pending |
+| Gp2-4 | features/attendance_qr | attendance_session_entity.dart, session_checkin_screen.dart, qr_scan_screen.dart | Session de présence, ouverture/fermeture, check-in manuel + QR, statuts | mocked |
+| Gp2-5 | features/attendance_qr | attendance_reports_screen.dart | Rapports (par élève/cours/groupe) + alertes absences répétées | mocked |
 | Gp3-1 | features/admin | — | Années/semestres/départements/filières | pending |
 | Gp3-2 | features/admin | — | Dashboard admin | pending |
 | Gp3-3 | features/auth | core/services/auth_service.dart, features/auth/... | Login/logout/reset/rôles | **mocked** |
