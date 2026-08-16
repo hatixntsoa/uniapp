@@ -16,7 +16,11 @@
 | Gp3-2 | features/admin | admin_dashboard_stats.dart, admin_dashboard_screen.dart | Dashboard admin avec indicateurs clés | mocked |
 | Gp3-3 | features/auth, core/services | permission_service.dart, permission_gate.dart, forgot_password_screen.dart | Login/logout/reset, gestion des rôles, permission gating | mocked |
 | Gp3-4 | features/auth, core/services | session_service.dart, profile_screen.dart, edit_profile_screen.dart, change_password_screen.dart | Profil, mot de passe, session sécurisée (refresh + auto-logout) | mocked |
-| Gp4-1..5 | features/teachers | — | Profil enseignant, EDT, recherche, liens matière | pending |
+| Gp4-1 | features/teachers | teacher_entity.dart, teacher_form_screen.dart | Ajout profil enseignant | mocked |
+| Gp4-2 | features/teachers | teacher_form_screen.dart | Édition profil, statut, assignation niveaux/groupes | mocked |
+| Gp4-3 | features/teachers | teacher_schedule_entry.dart, teacher_detail_screen.dart | Vue EDT + absences | mocked |
+| Gp4-4 | features/teachers | teacher_list_screen.dart | Recherche/filtre par département | mocked |
+| Gp4-5 | features/teachers | teacher_repository.dart (assignSubjects) | Liaison enseignant↔matière | mocked |
 | Gp5-1..3 | features/subjects | — | Matières, liens, filtres | pending |
 | Gp5-4/5, Gp6-1/2 | features/equipment | — | Matériels, mouvements, QR, alertes | pending |
 | Gp6-3..5 | features/social_feed | — | Fil d'actualité, groupes, messagerie | pending |

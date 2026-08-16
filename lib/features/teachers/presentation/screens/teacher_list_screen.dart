@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/pill_badge.dart';
 import '../../../../core/widgets/section_header.dart';
-import '../providers/student_providers.dart';
-import 'student_form_screen.dart';
-import 'student_profile_screen.dart';
+import '../../domain/entities/teacher_entity.dart';
+import '../providers/teacher_providers.dart';
+import 'teacher_form_screen.dart';
+import 'teacher_detail_screen.dart';
 
-/// Ticket: Gp2-3 — search + filters by level/group
-class StudentListScreen extends ConsumerStatefulWidget {
-  const StudentListScreen({super.key});
+/// Ticket: Gp4-4 — search/filter by department; entry point for the module
+class TeacherListScreen extends ConsumerStatefulWidget {
+  const TeacherListScreen({super.key});
 
   @override
-  ConsumerState<StudentListScreen> createState() => _StudentListScreenState();
+  ConsumerState<TeacherListScreen> createState() => _TeacherListScreenState();
 }
 
-class _StudentListScreenState extends ConsumerState<StudentListScreen> {
+class _TeacherListScreenState extends ConsumerState<TeacherListScreen> {
   final _searchCtrl = TextEditingController();
-  String? _niveau;
+  String? _department;
 
-  static const _niveaux = ['L1', 'L2', 'L3', 'M1', 'M2'];
+  static const _departments = ['Informatique', 'Mathématiques'];
 
   @override
   void dispose() {
@@ -31,20 +32,27 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
   }
 
   void _applyFilter() {
-    ref.read(studentFilterProvider.notifier).state = ref
-        .read(studentFilterProvider)
-        .copyWith(query: _searchCtrl.text, niveau: _niveau ?? '');
+    ref.read(teacherFilterProvider.notifier).state = ref
+        .read(teacherFilterProvider)
+        .copyWith(query: _searchCtrl.text, department: _department ?? '');
   }
+
+  Color _statusColor(TeacherStatus s) => switch (s) {
+        TeacherStatus.actif => AppColors.success,
+        TeacherStatus.conge => AppColors.warning,
+        TeacherStatus.retraite => AppColors.textMuted,
+      };
 
   @override
   Widget build(BuildContext context) {
-    final studentsAsync = ref.watch(studentListProvider);
+    final teachersAsync = ref.watch(teacherListProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Étudiants')),
+      appBar: AppBar(title: const Text('Enseignants')),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const StudentFormScreen())),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const TeacherFormScreen()),
+        ),
         icon: const Icon(Icons.person_add_alt_outlined),
         label: const Text('Ajouter'),
       ),
@@ -53,14 +61,11 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionHeader(
-              eyebrow: 'Gestion',
-              title: 'Répertoire des étudiants',
-            ),
+            const SectionHeader(eyebrow: 'Gestion', title: 'Corps enseignant'),
             TextField(
               controller: _searchCtrl,
               decoration: const InputDecoration(
-                hintText: 'Rechercher par nom ou matricule',
+                hintText: 'Rechercher par nom',
                 prefixIcon: Icon(Icons.search),
               ),
               onSubmitted: (_) => _applyFilter(),
@@ -72,20 +77,20 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
                 scrollDirection: Axis.horizontal,
                 children: [
                   ChoiceChip(
-                    label: const Text('Tous niveaux'),
-                    selected: _niveau == null,
+                    label: const Text('Tous départements'),
+                    selected: _department == null,
                     onSelected: (_) {
-                      setState(() => _niveau = null);
+                      setState(() => _department = null);
                       _applyFilter();
                     },
                   ),
                   const SizedBox(width: 8),
-                  for (final n in _niveaux) ...[
+                  for (final d in _departments) ...[
                     ChoiceChip(
-                      label: Text(n),
-                      selected: _niveau == n,
+                      label: Text(d),
+                      selected: _department == d,
                       onSelected: (_) {
-                        setState(() => _niveau = n);
+                        setState(() => _department = d);
                         _applyFilter();
                       },
                     ),
@@ -96,33 +101,29 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
             ),
             const SizedBox(height: AppSpacing.md),
             Expanded(
-              child: studentsAsync.when(
+              child: teachersAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (e, _) => Center(
-                  child: Text(
-                    'Une erreur est survenue',
-                    style: AppTextStyles.bodyMuted,
-                  ),
+                  child: Text('Une erreur est survenue',
+                      style: AppTextStyles.bodyMuted),
                 ),
-                data: (students) {
-                  if (students.isEmpty) {
+                data: (teachers) {
+                  if (teachers.isEmpty) {
                     return Center(
-                      child: Text(
-                        'Aucun élément à afficher',
-                        style: AppTextStyles.bodyMuted,
-                      ),
+                      child: Text('Aucun élément à afficher',
+                          style: AppTextStyles.bodyMuted),
                     );
                   }
                   return ListView.separated(
-                    itemCount: students.length,
+                    itemCount: teachers.length,
                     separatorBuilder: (_, _) =>
                         const SizedBox(height: AppSpacing.sm),
                     itemBuilder: (context, i) {
-                      final s = students[i];
+                      final t = teachers[i];
                       return AppCard(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => StudentProfileScreen(student: s),
+                            builder: (_) => TeacherDetailScreen(teacher: t),
                           ),
                         ),
                         child: Row(
@@ -130,10 +131,9 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
                             CircleAvatar(
                               backgroundColor: AppColors.accentSoft,
                               child: Text(
-                                s.fullName.substring(0, 1),
-                                style: AppTextStyles.label.copyWith(
-                                  color: AppColors.accent,
-                                ),
+                                t.fullName.substring(0, 1),
+                                style: AppTextStyles.label
+                                    .copyWith(color: AppColors.accent),
                               ),
                             ),
                             const SizedBox(width: AppSpacing.md),
@@ -141,20 +141,14 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    s.fullName,
-                                    style: AppTextStyles.cardTitle,
-                                  ),
-                                  Text(
-                                    '${s.matricule} · ${s.niveau} · ${s.groupName}',
-                                    style: AppTextStyles.bodyMuted,
-                                  ),
+                                  Text(t.fullName, style: AppTextStyles.cardTitle),
+                                  Text(t.department, style: AppTextStyles.bodyMuted),
                                 ],
                               ),
                             ),
-                            const Icon(
-                              Icons.chevron_right,
-                              color: AppColors.textMuted,
+                            PillBadge(
+                              label: t.status.label,
+                              color: _statusColor(t.status),
                             ),
                           ],
                         ),

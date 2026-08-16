@@ -61,7 +61,7 @@ class ExamRosterScreen extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.all(AppSpacing.screenPadding),
             itemCount: roster.length,
-            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
             itemBuilder: (context, i) {
               final g = roster[i];
               return AppCard(
