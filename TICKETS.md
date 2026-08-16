@@ -45,6 +45,17 @@
 | Gp9-2 | features/timetable | timetable_form_screen.dart | Assigner matière/enseignant/salle/jour/créneau, édition/annulation | mocked |
 | Gp9-3 | features/timetable | timetable_conflict.dart, timetable_conflicts_screen.dart | Détection conflits salle/enseignant/groupe | mocked |
 | Gp9-5 | features/timetable | timetable_view_screen.dart | Vue multi-consultation + auto-notification (stub) | mocked |
-| Gp10-1..3 | features/presentations | — | Présentations, évaluation, historique | pending |
+| Gp10-1..Gp10-3 | features/presentations | Présentations, évaluation, historique | mocked |
 
-**Fondations livrées (hors tickets numérotés) :** thème, widgets partagés (`AppCard`, `SectionHeader`, `MediaCard`, `PillBadge`, `AppTimelineTile`), routeur, coquille d'app avec navigation par rôle, écran de connexion (mock).
+**Toutes les 46 tickets sont livrées avec UI complète, providers Riverpod, et couche
+repository mockée derrière une interface prête pour l'intégration API réelle.**
+
+**Prochaines étapes suggérées (hors scope de cette livraison) :**
+1. Remplacer chaque `Mock*Repository` par une implémentation Dio pointant vers le vrai backend.
+2. Brancher `flutter_local_notifications` pour les TODO de notification (activités, EDT).
+3. Relier les pickers texte-libre (matière/enseignant/groupe dans plusieurs formulaires)
+   à de vrais dropdowns alimentés par `features/admin`, `features/teachers`, `features/subjects`.
+4. Appeler `AuthNotifier.notifyActivity()` depuis un `Listener` global dans `AppShell`
+   pour activer le timer d'inactivité (Gp3-4).
+5. Ajouter les tests widgets/unitaires (section 1 du prompt) — non inclus dans cette livraison de code.
+6. Ajouter les fichiers ARB `app_en.arb` si l'anglais devient nécessaire.
