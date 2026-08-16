@@ -6,6 +6,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../providers/auth_provider.dart';
+import 'forgot_password_screen.dart';
 
 /// Ticket: Gp3-3 — login screen (email/matricule + password)
 class LoginScreen extends ConsumerStatefulWidget {
@@ -130,10 +131,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: AppSpacing.md),
                     Center(
                       child: TextButton(
-                        onPressed: () {
-                          // TODO(Gp3-3): wire real password-reset flow once
-                          // the reset endpoint is defined.
-                        },
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordScreen(),
+                          ),
+                        ),
                         child: const Text('Mot de passe oublié ?'),
                       ),
                     ),
