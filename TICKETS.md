@@ -2,14 +2,14 @@
 
 | Ticket | Dossier | Fichier(s) | Description | Statut |
 |---|---|---|---|---|
-| Gp1-1 | features/exams | — | Créer évaluation | pending |
-| Gp1-2 | features/exams | — | Liste étudiants, pointage, notes, publication | pending |
-| Gp1-3 | features/exams | — | Types d'évaluation + quiz builder | pending |
-| Gp1-4 | features/exams | — | Lien évaluation/matière/enseignant/groupe | pending |
-| Gp1-5 | features/exams | — | QCM auto-corrigé + AiGradingService (stub) | pending |
-| Gp2-1 | features/students | — | Ajout/édition/archivage étudiant | pending |
-| Gp2-2 | features/students | — | Profil complet + QR + historique | pending |
-| Gp2-3 | features/students | — | Recherche/filtres + vue globale | pending |
+| Gp1-1 | features/exams | exam_entity.dart, exam_form_screen.dart | Créer évaluation | mocked |
+| Gp1-2 | features/exams | exam_roster_screen.dart, grade_entity.dart | Liste étudiants, pointage, notes, publication | mocked |
+| Gp1-3 | features/exams | exam_entity.dart (ExamType), quiz_entity.dart | Types d'évaluation + quiz builder (entités) | mocked |
+| Gp1-4 | features/exams | exam_form_screen.dart | Lien évaluation/matière/enseignant/groupe | mocked, needs subjects/teachers/admin modules |
+| Gp1-5 | features/exams | ai_grading_service.dart | QCM auto-corrigé (fonctionnel) + plagiat (stub) | partially mocked |
+| Gp2-1 | features/students | student_entity.dart, student_form_screen.dart | Ajout/édition/archivage étudiant | mocked |
+| Gp2-2 | features/students | student_profile_screen.dart | Profil complet + QR + historique académique | mocked |
+| Gp2-3 | features/students | student_list_screen.dart, student_situation_screen.dart | Recherche/filtres + vue globale | mocked |
 | Gp2-4 | features/attendance_qr | — | Session de présence + check-in QR | pending |
 | Gp2-5 | features/attendance_qr | — | Rapports de présence + alertes | pending |
 | Gp3-1 | features/admin | — | Années/semestres/départements/filières | pending |
