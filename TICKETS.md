@@ -36,7 +36,11 @@
 | Gp7-3 | features/activities | activity_form_screen.dart, activity_repository.dart (publishActivity) | Publication + inscription (places) | mocked |
 | Gp7-4 | features/activities | activity_list_screen.dart, activity_detail_screen.dart, registration_entity.dart | Browse/inscription/désinscription + historique | mocked |
 | Gp7-5 | features/activities | participation_stats.dart, participation_stats_screen.dart | Statistiques admin de participation | mocked |
-| Gp8-1,3..6 | features/rooms | — | Salles, disponibilité, réservation | pending |
+| Gp8-1 | features/rooms | room_entity.dart, room_form_screen.dart | Ajout salle (capacité, type, localisation, équipement) | mocked |
+| Gp8-3 | features/rooms | room_form_screen.dart | Édition salle | mocked |
+| Gp8-4 | features/rooms | room_reservation.dart, room_detail_screen.dart | Disponibilité/état/historique d'occupation | mocked |
+| Gp8-5 | features/rooms | room_reservation_screen.dart, room_repository.dart (checkConflict, autoAssign) | Recherche, réservation/auto-assignation, vue conflits | mocked |
+| Gp8-6 | features/rooms | room_detail_screen.dart (PopupMenuButton status) | Statuts indisponible/occupée/maintenance | mocked |
 | Gp9-1,2,3,5 | features/timetable | — | Emplois du temps, conflits, vues multiples | pending |
 | Gp10-1..3 | features/presentations | — | Présentations, évaluation, historique | pending |
 
