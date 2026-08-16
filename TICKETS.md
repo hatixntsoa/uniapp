@@ -41,7 +41,10 @@
 | Gp8-4 | features/rooms | room_reservation.dart, room_detail_screen.dart | Disponibilité/état/historique d'occupation | mocked |
 | Gp8-5 | features/rooms | room_reservation_screen.dart, room_repository.dart (checkConflict, autoAssign) | Recherche, réservation/auto-assignation, vue conflits | mocked |
 | Gp8-6 | features/rooms | room_detail_screen.dart (PopupMenuButton status) | Statuts indisponible/occupée/maintenance | mocked |
-| Gp9-1,2,3,5 | features/timetable | — | Emplois du temps, conflits, vues multiples | pending |
+| Gp9-1 | features/timetable | timetable_slot_entity.dart, timetable_form_screen.dart | Créer EDT par groupe/niveau | mocked |
+| Gp9-2 | features/timetable | timetable_form_screen.dart | Assigner matière/enseignant/salle/jour/créneau, édition/annulation | mocked |
+| Gp9-3 | features/timetable | timetable_conflict.dart, timetable_conflicts_screen.dart | Détection conflits salle/enseignant/groupe | mocked |
+| Gp9-5 | features/timetable | timetable_view_screen.dart | Vue multi-consultation + auto-notification (stub) | mocked |
 | Gp10-1..3 | features/presentations | — | Présentations, évaluation, historique | pending |
 
 **Fondations livrées (hors tickets numérotés) :** thème, widgets partagés (`AppCard`, `SectionHeader`, `MediaCard`, `PillBadge`, `AppTimelineTile`), routeur, coquille d'app avec navigation par rôle, écran de connexion (mock).
