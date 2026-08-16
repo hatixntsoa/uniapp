@@ -31,7 +31,11 @@
 | Gp6-3 | features/social_feed | post_entity.dart, feed_screen.dart, post_detail_screen.dart | Fil d'actualité, posts officiels, réactions, commentaires, modération | mocked |
 | Gp6-4 | features/social_feed | activity_group_entity.dart, group_list_screen.dart | Groupes classe/club/activité | mocked |
 | Gp6-5 | features/social_feed | chat_transport.dart, mock_chat_transport.dart, chat_screen.dart | Messagerie/bot (scaffold UI + transport pluggable) | stubbed |
-| Gp7-1..5 | features/activities | — | Activités, inscriptions, stats | pending |
+| Gp7-1 | features/activities | activity_entity.dart, activity_form_screen.dart | Créer activité (type, date, lieu, responsable, places, description) | mocked |
+| Gp7-2 | features/activities | activity_form_screen.dart | Détails complets de création | mocked |
+| Gp7-3 | features/activities | activity_form_screen.dart, activity_repository.dart (publishActivity) | Publication + inscription (places) | mocked |
+| Gp7-4 | features/activities | activity_list_screen.dart, activity_detail_screen.dart, registration_entity.dart | Browse/inscription/désinscription + historique | mocked |
+| Gp7-5 | features/activities | participation_stats.dart, participation_stats_screen.dart | Statistiques admin de participation | mocked |
 | Gp8-1,3..6 | features/rooms | — | Salles, disponibilité, réservation | pending |
 | Gp9-1,2,3,5 | features/timetable | — | Emplois du temps, conflits, vues multiples | pending |
 | Gp10-1..3 | features/presentations | — | Présentations, évaluation, historique | pending |
