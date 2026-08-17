@@ -8,7 +8,7 @@ import '../../domain/repositories/attendance_repository.dart';
 
 /// Ticket: Gp2-4 / Gp2-5 — providers
 final attendanceRepositoryProvider = Provider<AttendanceRepository>((ref) {
-  return MockAttendanceRepository();
+  return SqliteAttendanceRepository();
 });
 
 final sessionListProvider =
