@@ -141,7 +141,7 @@ class _EquipmentListScreenState extends ConsumerState<EquipmentListScreen> {
                   }
                   return ListView.separated(
                     itemCount: items.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (_, _) =>
                         const SizedBox(height: AppSpacing.sm),
                     itemBuilder: (context, i) {
                       final e = items[i];

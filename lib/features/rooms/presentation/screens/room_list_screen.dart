@@ -92,7 +92,7 @@ class _RoomListScreenState extends ConsumerState<RoomListScreen> {
                   }
                   return ListView.separated(
                     itemCount: rooms.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (_, _) =>
                         const SizedBox(height: AppSpacing.sm),
                     itemBuilder: (context, i) {
                       final r = rooms[i];
