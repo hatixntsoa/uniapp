@@ -40,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: AppSpacing.md,
             mainAxisSpacing: AppSpacing.md,
-            childAspectRatio: 0.85,
+            childAspectRatio: 0.68,
             children: [
               for (final item in items)
                 MediaCard(

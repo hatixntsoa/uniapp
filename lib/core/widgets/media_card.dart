@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_card.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
@@ -35,7 +36,7 @@ class MediaCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 96,
+            height: 72,
             width: double.infinity,
             decoration: const BoxDecoration(
               color: AppColors.accentSoft,
@@ -50,9 +51,19 @@ class MediaCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(eyebrow.toUpperCase(), style: AppTextStyles.eyebrow),
+                Text(
+                  eyebrow.toUpperCase(),
+                  style: AppTextStyles.eyebrow,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const SizedBox(height: 6),
-                Text(title, style: AppTextStyles.cardTitle),
+                Text(
+                  title,
+                  style: AppTextStyles.cardTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const SizedBox(height: 4),
                 Text(
                   description,

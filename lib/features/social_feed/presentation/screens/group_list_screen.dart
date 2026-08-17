@@ -46,7 +46,7 @@ class GroupListScreen extends ConsumerWidget {
             crossAxisCount: 2,
             crossAxisSpacing: AppSpacing.md,
             mainAxisSpacing: AppSpacing.md,
-            childAspectRatio: 0.78,
+            childAspectRatio: 0.62,
             children: [
               for (final g in groups)
                 MediaCard(

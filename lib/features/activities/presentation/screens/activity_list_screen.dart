@@ -74,7 +74,7 @@ class ActivityListScreen extends ConsumerWidget {
             crossAxisCount: 2,
             crossAxisSpacing: AppSpacing.md,
             mainAxisSpacing: AppSpacing.md,
-            childAspectRatio: 0.72,
+            childAspectRatio: 0.62,
             children: [
               for (final a in published)
                 MediaCard(
