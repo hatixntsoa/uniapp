@@ -47,7 +47,12 @@ class MediaCard extends StatelessWidget {
             child: Icon(icon, color: AppColors.accent, size: 32),
           ),
           Padding(
-            padding: const EdgeInsets.all(AppSpacing.cardPadding),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.cardPadding,
+              AppSpacing.sm,
+              AppSpacing.cardPadding,
+              AppSpacing.sm,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -72,14 +77,22 @@ class MediaCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 if (actionLabel != null) ...[
-                  const SizedBox(height: AppSpacing.sm),
-                  TextButton(
-                    onPressed: onAction,
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      foregroundColor: AppColors.accent,
+                  const SizedBox(height: 4),
+                  SizedBox(
+                    height: 28,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton(
+                        onPressed: onAction,
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          foregroundColor: AppColors.accent,
+                        ),
+                        child: Text(actionLabel!),
+                      ),
                     ),
-                    child: Text(actionLabel!),
                   ),
                 ],
               ],
