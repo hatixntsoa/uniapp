@@ -17,6 +17,12 @@ class AppTheme {
         brightness: Brightness.light,
         surface: AppColors.surface,
         primary: AppColors.accent,
+        secondary: AppColors.accent,
+        tertiary: AppColors.accent,
+        onSecondary: Colors.white,
+        onTertiary: Colors.white,
+        secondaryContainer: AppColors.accentSoft,
+        tertiaryContainer: AppColors.accentSoft,
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: AppColors.background,
