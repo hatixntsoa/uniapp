@@ -34,27 +34,34 @@ class HomeScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(AppSpacing.screenPadding),
         children: [
           const SectionHeader(eyebrow: 'Aujourd\'hui', title: 'Accès rapide'),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: AppSpacing.md,
-            mainAxisSpacing: AppSpacing.md,
-            childAspectRatio: 0.68,
-            children: [
-              for (final item in items)
-                MediaCard(
-                  eyebrow: item.eyebrow,
-                  title: item.title,
-                  description: item.description,
-                  icon: item.icon,
-                  actionLabel: 'Ouvrir',
-                  onTap: () => Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => item.builder())),
-                  onAction: () => Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => item.builder())),
-                ),
-            ],
+
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final cardWidth = (constraints.maxWidth - AppSpacing.md) / 2;
+              return Wrap(
+                spacing: AppSpacing.md,
+                runSpacing: AppSpacing.md,
+                children: [
+                  for (final item in items)
+                    SizedBox(
+                      width: cardWidth,
+                      child: MediaCard(
+                        eyebrow: item.eyebrow,
+                        title: item.title,
+                        description: item.description,
+                        icon: item.icon,
+                        actionLabel: 'Ouvrir',
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => item.builder()),
+                        ),
+                        onAction: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => item.builder()),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),
