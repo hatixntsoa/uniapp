@@ -8,7 +8,7 @@ import '../../domain/repositories/student_repository.dart';
 
 /// Ticket: Gp2-1..Gp2-3 — providers
 final studentRepositoryProvider = Provider<StudentRepository>((ref) {
-  return MockStudentRepository();
+  return SqliteStudentRepository();
 });
 
 class StudentFilter {

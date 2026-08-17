@@ -1,55 +1,31 @@
+import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../core/database/app_database.dart';
 import '../domain/entities/academic_history_entry.dart';
 import '../domain/entities/student_entity.dart';
 import '../domain/entities/student_situation.dart';
 import '../domain/repositories/student_repository.dart';
 
-/// Ticket: Gp2-1..Gp2-3 — mock in-memory implementation.
-/// Status: mocked. Replace with Dio calls to GET/POST/PUT /students and
-/// GET /students/:id/history, /students/:id/situation once the backend
-/// contract is available. Interface stays identical.
-class MockStudentRepository implements StudentRepository {
-  final List<StudentEntity> _students = [
-    const StudentEntity(
-      id: 'u-stud-1',
-      fullName: 'Lina Meziane',
-      matricule: '20231045',
-      email: 'lina.meziane@etu.univ.fr',
-      filiere: 'Informatique',
-      niveau: 'L2',
-      groupName: 'Groupe A',
-      anneeUniversitaire: '2025/2026',
-    ),
-    const StudentEntity(
-      id: 'u-stud-2',
-      fullName: 'Yanis Kaci',
-      matricule: '20231046',
-      email: 'yanis.kaci@etu.univ.fr',
-      filiere: 'Informatique',
-      niveau: 'L2',
-      groupName: 'Groupe A',
-      anneeUniversitaire: '2025/2026',
-    ),
-    const StudentEntity(
-      id: 'u-stud-3',
-      fullName: 'Amel Cherif',
-      matricule: '20231047',
-      email: 'amel.cherif@etu.univ.fr',
-      filiere: 'Génie Logiciel',
-      niveau: 'L3',
-      groupName: 'Groupe B',
-      anneeUniversitaire: '2025/2026',
-    ),
-    const StudentEntity(
-      id: 'u-stud-4',
-      fullName: 'Sofiane Belkacem',
-      matricule: '20231048',
-      email: 'sofiane.belkacem@etu.univ.fr',
-      filiere: 'Réseaux',
-      niveau: 'M1',
-      groupName: 'Groupe C',
-      anneeUniversitaire: '2025/2026',
-    ),
-  ];
+/// Ticket: Gp2-1..Gp2-3 — SQLite-backed implementation.
+/// Status: wired to local database (lib/core/database/app_database.dart).
+/// Interface unchanged — swapping this for a Dio-backed remote repository
+/// later is still a one-line change at student_providers.dart.
+class SqliteStudentRepository implements StudentRepository {
+  Future<Database> get _db => AppDatabase.instance.database;
+
+  StudentEntity _fromRow(Map<String, Object?> row) => StudentEntity(
+    id: row['id'] as String,
+    fullName: row['fullName'] as String,
+    matricule: row['matricule'] as String,
+    email: row['email'] as String,
+    filiere: row['filiere'] as String,
+    niveau: row['niveau'] as String,
+    groupName: row['groupName'] as String,
+    anneeUniversitaire: row['anneeUniversitaire'] as String,
+    photoUrl: row['photoUrl'] as String?,
+    isArchived: (row['isArchived'] as int) == 1,
+  );
 
   @override
   Future<List<StudentEntity>> getStudents({
@@ -58,100 +34,180 @@ class MockStudentRepository implements StudentRepository {
     String? groupName,
     bool includeArchived = false,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 250));
-    return _students.where((s) {
-      if (!includeArchived && s.isArchived) return false;
-      if (query != null && query.trim().isNotEmpty) {
-        final q = query.toLowerCase();
-        if (!s.fullName.toLowerCase().contains(q) && !s.matricule.contains(q)) {
-          return false;
-        }
-      }
-      if (niveau != null && niveau.isNotEmpty && s.niveau != niveau) {
-        return false;
-      }
-      if (groupName != null &&
-          groupName.isNotEmpty &&
-          s.groupName != groupName) {
-        return false;
-      }
-      return true;
-    }).toList();
+    final db = await _db;
+    final where = <String>[];
+    final args = <Object?>[];
+
+    if (!includeArchived) where.add('isArchived = 0');
+    if (query != null && query.trim().isNotEmpty) {
+      where.add('(fullName LIKE ? OR matricule LIKE ?)');
+      args.add('%$query%');
+      args.add('%$query%');
+    }
+    if (niveau != null && niveau.isNotEmpty) {
+      where.add('niveau = ?');
+      args.add(niveau);
+    }
+    if (groupName != null && groupName.isNotEmpty) {
+      where.add('groupName = ?');
+      args.add(groupName);
+    }
+
+    final rows = await db.query(
+      'students',
+      where: where.isEmpty ? null : where.join(' AND '),
+      whereArgs: args,
+      orderBy: 'fullName ASC',
+    );
+    return rows.map(_fromRow).toList();
   }
 
   @override
   Future<StudentEntity> createStudent(StudentEntity student) async {
-    _students.add(student);
+    final db = await _db;
+    await db.insert('students', {
+      'id': student.id.isEmpty ? const Uuid().v4() : student.id,
+      'fullName': student.fullName,
+      'matricule': student.matricule,
+      'email': student.email,
+      'filiere': student.filiere,
+      'niveau': student.niveau,
+      'groupName': student.groupName,
+      'anneeUniversitaire': student.anneeUniversitaire,
+      'photoUrl': student.photoUrl,
+      'isArchived': student.isArchived ? 1 : 0,
+    });
     return student;
   }
 
   @override
   Future<StudentEntity> updateStudent(StudentEntity student) async {
-    final i = _students.indexWhere((s) => s.id == student.id);
-    if (i != -1) _students[i] = student;
+    final db = await _db;
+    await db.update(
+      'students',
+      {
+        'fullName': student.fullName,
+        'filiere': student.filiere,
+        'niveau': student.niveau,
+        'groupName': student.groupName,
+        'isArchived': student.isArchived ? 1 : 0,
+      },
+      where: 'id = ?',
+      whereArgs: [student.id],
+    );
     return student;
   }
 
   @override
   Future<void> archiveStudent(String studentId) async {
-    final i = _students.indexWhere((s) => s.id == studentId);
-    if (i != -1) _students[i] = _students[i].copyWith(isArchived: true);
+    final db = await _db;
+    await db.update(
+      'students',
+      {'isArchived': 1},
+      where: 'id = ?',
+      whereArgs: [studentId],
+    );
   }
 
   @override
   Future<List<AcademicHistoryEntry>> getAcademicHistory(
     String studentId,
   ) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return [
-      AcademicHistoryEntry(
-        title: 'Inscription L2 Informatique',
-        subtitle: 'Groupe A · Année 2025/2026',
-        date: DateTime(2025, 9, 15),
-        details: const ['Filière: Informatique', 'Niveau: L2'],
-      ),
-      AcademicHistoryEntry(
-        title: 'Contrôle continu — Algorithmique',
-        subtitle: 'Note obtenue: 15,5/20',
-        date: DateTime.now().subtract(const Duration(days: 20)),
-        details: const ['Présence: Présent', 'Coefficient: 1.5'],
-      ),
-      AcademicHistoryEntry(
-        title: 'Absence — Bases de données',
-        subtitle: 'Statut: Justifiée',
-        date: DateTime.now().subtract(const Duration(days: 12)),
-      ),
-    ];
+    final db = await _db;
+    final rows = await db.query(
+      'academic_history',
+      where: 'studentId = ?',
+      whereArgs: [studentId],
+      orderBy: 'date DESC',
+    );
+    return rows
+        .map(
+          (r) => AcademicHistoryEntry(
+            title: r['title'] as String,
+            subtitle: r['subtitle'] as String,
+            date: DateTime.parse(r['date'] as String),
+            details: (r['details'] as String)
+                .split('|')
+                .where((e) => e.isNotEmpty)
+                .toList(),
+          ),
+        )
+        .toList();
   }
 
   @override
   Future<StudentSituation> getSituation(String studentId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    final student = _students.firstWhere((s) => s.id == studentId);
+    final db = await _db;
+    final studentRows = await db.query(
+      'students',
+      where: 'id = ?',
+      whereArgs: [studentId],
+    );
+    final student = _fromRow(studentRows.first);
+
+    // Aggregate real grade data for this student across all exams.
+    final gradeRows = await db.rawQuery(
+      '''
+      SELECT e.subjectName, g.grade, e.coefficient
+      FROM exam_grades g
+      JOIN exams e ON e.id = g.examId
+      WHERE g.studentId = ? AND g.grade IS NOT NULL
+    ''',
+      [studentId],
+    );
+
+    final grades = gradeRows
+        .map(
+          (r) => GradeSummary(
+            subjectName: r['subjectName'] as String,
+            grade: r['grade'] as double,
+            coefficient: r['coefficient'] as double,
+          ),
+        )
+        .toList();
+
+    final absenceRows = await db.query(
+      'exam_grades',
+      where: 'studentId = ? AND attendance IN (?, ?)',
+      whereArgs: [studentId, 'absent', 'justified'],
+    );
+    final absenceCount = absenceRows
+        .where((r) => r['attendance'] == 'absent')
+        .length;
+    final justifiedCount = absenceRows
+        .where((r) => r['attendance'] == 'justified')
+        .length;
+
+    final upcomingRows = await db.query(
+      'exams',
+      where: 'groupId = (SELECT groupName FROM students WHERE id = ?) OR 1=1',
+      whereArgs: [studentId],
+    );
+    final upcoming = upcomingRows
+        .map(
+          (r) => (
+            date: DateTime.parse(r['date'] as String),
+            title: r['title'] as String,
+            subjectName: r['subjectName'] as String,
+          ),
+        )
+        .where((e) => e.date.isAfter(DateTime.now()))
+        .map(
+          (e) => UpcomingExamSummary(
+            title: e.title,
+            date: e.date,
+            subjectName: e.subjectName,
+          ),
+        )
+        .toList();
+
     return StudentSituation(
       student: student,
-      grades: const [
-        GradeSummary(
-          subjectName: 'Algorithmique',
-          grade: 15.5,
-          coefficient: 1.5,
-        ),
-        GradeSummary(
-          subjectName: 'Bases de données',
-          grade: 12,
-          coefficient: 3,
-        ),
-      ],
-      absenceCount: 3,
-      justifiedAbsenceCount: 1,
-      upcomingExams: [
-        UpcomingExamSummary(
-          title: 'Examen final — Bases de données',
-          date: DateTime.now().add(const Duration(days: 10)),
-          subjectName: 'Bases de données',
-        ),
-      ],
-      notificationCount: 2,
+      grades: grades,
+      absenceCount: absenceCount,
+      justifiedAbsenceCount: justifiedCount,
+      upcomingExams: upcoming,
+      notificationCount: 0,
     );
   }
 }
