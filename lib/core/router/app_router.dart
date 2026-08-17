@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,9 +7,17 @@ import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../app_shell.dart';
 
 /// Ticket: core — central named-route router (section 1)
+class _AuthRefreshNotifier extends ChangeNotifier {
+  _AuthRefreshNotifier(Ref ref) {
+    ref.listen(authProvider, (_, _) => notifyListeners());
+  }
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
+  final refreshNotifier = _AuthRefreshNotifier(ref);
   return GoRouter(
     initialLocation: '/login',
+    refreshListenable: refreshNotifier,
     redirect: (context, state) {
       final isLoggedIn = ref.read(authProvider).user != null;
       final isLoggingIn = state.matchedLocation == '/login';

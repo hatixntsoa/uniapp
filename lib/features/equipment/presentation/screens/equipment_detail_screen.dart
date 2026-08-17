@@ -77,6 +77,7 @@ class EquipmentDetailScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(equipment.name)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'equipmentDetailFab',
         onPressed: () => _reportIncident(context, ref),
         icon: const Icon(Icons.report_problem_outlined),
         label: const Text('Signaler'),

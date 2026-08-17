@@ -88,7 +88,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: AppSpacing.md,
                 mainAxisSpacing: AppSpacing.md,
-                childAspectRatio: 1.5,
+                childAspectRatio: 1.2,
                 children: [
                   for (final t in tiles)
                     AppCard(
@@ -97,11 +97,12 @@ class AdminDashboardScreen extends ConsumerWidget {
                         children: [
                           Icon(t.icon, color: AppColors.accent),
                           const Spacer(),
+                          Text(t.value, style: AppTextStyles.heroNumber.copyWith(fontSize: 22)),
                           Text(
-                            t.value,
-                            style: AppTextStyles.heroNumber.copyWith(
-                              fontSize: 26,
-                            ),
+                            t.label,
+                            style: AppTextStyles.bodyMuted,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                           Text(t.label, style: AppTextStyles.bodyMuted),
                         ],

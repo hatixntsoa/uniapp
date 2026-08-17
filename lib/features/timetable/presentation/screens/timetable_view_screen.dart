@@ -43,6 +43,7 @@ class _TimetableViewScreenState extends ConsumerState<TimetableViewScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'timetableFab',
         onPressed: () => Navigator.of(
           context,
         ).push(MaterialPageRoute(builder: (_) => const TimetableFormScreen())),

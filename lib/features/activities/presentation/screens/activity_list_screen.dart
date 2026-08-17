@@ -44,6 +44,7 @@ class ActivityListScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'activityListFab',
         onPressed: () => Navigator.of(
           context,
         ).push(MaterialPageRoute(builder: (_) => const ActivityFormScreen())),

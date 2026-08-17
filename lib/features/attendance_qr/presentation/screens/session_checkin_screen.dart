@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -17,11 +18,11 @@ class SessionCheckinScreen extends ConsumerWidget {
   final AttendanceSessionEntity session;
 
   Color _statusColor(CheckInStatus s) => switch (s) {
-        CheckInStatus.present => AppColors.statusPresent,
-        CheckInStatus.absent => AppColors.statusAbsent,
-        CheckInStatus.late => AppColors.statusLate,
-        CheckInStatus.justified => AppColors.statusJustified,
-      };
+    CheckInStatus.present => AppColors.statusPresent,
+    CheckInStatus.absent => AppColors.statusAbsent,
+    CheckInStatus.late => AppColors.statusLate,
+    CheckInStatus.justified => AppColors.statusJustified,
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,6 +31,7 @@ class SessionCheckinScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(session.courseName)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'sessionCheckinFab',
         onPressed: session.state != SessionState.open
             ? null
             : () async {
@@ -57,12 +59,18 @@ class SessionCheckinScreen extends ConsumerWidget {
       body: recordsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
-          child: Text('Une erreur est survenue', style: AppTextStyles.bodyMuted),
+          child: Text(
+            'Une erreur est survenue',
+            style: AppTextStyles.bodyMuted,
+          ),
         ),
         data: (records) {
           if (records.isEmpty) {
             return Center(
-              child: Text('Aucun élément à afficher', style: AppTextStyles.bodyMuted),
+              child: Text(
+                'Aucun élément à afficher',
+                style: AppTextStyles.bodyMuted,
+              ),
             );
           }
           return ListView.separated(
@@ -75,14 +83,20 @@ class SessionCheckinScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(r.studentName, style: AppTextStyles.cardTitle),
+                      child: Text(
+                        r.studentName,
+                        style: AppTextStyles.cardTitle,
+                      ),
                     ),
                     PopupMenuButton<CheckInStatus>(
                       onSelected: (status) => ref
                           .read(sessionRecordsProvider(session.id).notifier)
                           .setStatus(r.studentId, status),
                       itemBuilder: (context) => CheckInStatus.values
-                          .map((s) => PopupMenuItem(value: s, child: Text(s.label)))
+                          .map(
+                            (s) =>
+                                PopupMenuItem(value: s, child: Text(s.label)),
+                          )
                           .toList(),
                       child: PillBadge(
                         label: r.status.label,

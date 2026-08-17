@@ -43,6 +43,7 @@ class _StudentListScreenState extends ConsumerState<StudentListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Étudiants')),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'studentListFab',
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const StudentFormScreen())),
         icon: const Icon(Icons.person_add_alt_outlined),

@@ -43,6 +43,7 @@ class _SubjectListScreenState extends ConsumerState<SubjectListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Matières')),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'subjectListFab',
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const SubjectFormScreen())),
         icon: const Icon(Icons.add),

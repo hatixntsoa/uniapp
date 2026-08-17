@@ -25,6 +25,7 @@ class ExamListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Examens & Évaluations')),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'examListFab',
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const ExamFormScreen())),
         icon: const Icon(Icons.add),

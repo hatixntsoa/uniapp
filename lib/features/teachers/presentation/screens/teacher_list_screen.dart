@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -38,10 +39,10 @@ class _TeacherListScreenState extends ConsumerState<TeacherListScreen> {
   }
 
   Color _statusColor(TeacherStatus s) => switch (s) {
-        TeacherStatus.actif => AppColors.success,
-        TeacherStatus.conge => AppColors.warning,
-        TeacherStatus.retraite => AppColors.textMuted,
-      };
+    TeacherStatus.actif => AppColors.success,
+    TeacherStatus.conge => AppColors.warning,
+    TeacherStatus.retraite => AppColors.textMuted,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +51,9 @@ class _TeacherListScreenState extends ConsumerState<TeacherListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Enseignants')),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => const TeacherFormScreen()),
-        ),
+        heroTag: 'teacherListFab',
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const TeacherFormScreen())),
         icon: const Icon(Icons.person_add_alt_outlined),
         label: const Text('Ajouter'),
       ),
@@ -104,14 +105,18 @@ class _TeacherListScreenState extends ConsumerState<TeacherListScreen> {
               child: teachersAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (e, _) => Center(
-                  child: Text('Une erreur est survenue',
-                      style: AppTextStyles.bodyMuted),
+                  child: Text(
+                    'Une erreur est survenue',
+                    style: AppTextStyles.bodyMuted,
+                  ),
                 ),
                 data: (teachers) {
                   if (teachers.isEmpty) {
                     return Center(
-                      child: Text('Aucun élément à afficher',
-                          style: AppTextStyles.bodyMuted),
+                      child: Text(
+                        'Aucun élément à afficher',
+                        style: AppTextStyles.bodyMuted,
+                      ),
                     );
                   }
                   return ListView.separated(
@@ -132,8 +137,9 @@ class _TeacherListScreenState extends ConsumerState<TeacherListScreen> {
                               backgroundColor: AppColors.accentSoft,
                               child: Text(
                                 t.fullName.substring(0, 1),
-                                style: AppTextStyles.label
-                                    .copyWith(color: AppColors.accent),
+                                style: AppTextStyles.label.copyWith(
+                                  color: AppColors.accent,
+                                ),
                               ),
                             ),
                             const SizedBox(width: AppSpacing.md),
@@ -141,8 +147,14 @@ class _TeacherListScreenState extends ConsumerState<TeacherListScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(t.fullName, style: AppTextStyles.cardTitle),
-                                  Text(t.department, style: AppTextStyles.bodyMuted),
+                                  Text(
+                                    t.fullName,
+                                    style: AppTextStyles.cardTitle,
+                                  ),
+                                  Text(
+                                    t.department,
+                                    style: AppTextStyles.bodyMuted,
+                                  ),
                                 ],
                               ),
                             ),

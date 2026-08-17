@@ -26,6 +26,7 @@ class PresentationEvaluationScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(presentation.title)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'presentationEvalFab',
         onPressed: () async {
           await ref
               .read(presentationListProvider.notifier)

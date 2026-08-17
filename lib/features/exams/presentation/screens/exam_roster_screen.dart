@@ -30,6 +30,7 @@ class ExamRosterScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(exam.title)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'examRosterFab',
         onPressed: () async {
           await ref.read(examListProvider.notifier).publishExam(exam.id);
           if (context.mounted) {

@@ -34,6 +34,7 @@ class RoomDetailScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: Text(room.name)),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'roomDetailFab',
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => RoomReservationScreen(room: room)),
         ),

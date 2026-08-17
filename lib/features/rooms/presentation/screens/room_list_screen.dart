@@ -49,6 +49,7 @@ class _RoomListScreenState extends ConsumerState<RoomListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Salles')),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'roomListFab',
         onPressed: () => Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => const RoomFormScreen())),
         icon: const Icon(Icons.add),
